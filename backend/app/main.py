@@ -23,11 +23,13 @@ from app.routers import auth as auth_router
 from app.routers import patients as patients_router
 from app.routers import sessions as sessions_router
 from app.routers import feedback as feedback_router
+from app.routers import clinician as clinician_router
 
 app.include_router(auth_router.router)
 app.include_router(patients_router.router)
 app.include_router(sessions_router.router)
 app.include_router(feedback_router.router)
+app.include_router(clinician_router.router)
 
 
 @app.get("/health", tags=["Health"])
