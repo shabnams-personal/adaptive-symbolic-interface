@@ -1504,3 +1504,80 @@ Notification/reminder system -- push notifications for daily sessions
 
 Data export for researchers -- CSV/JSON export of trial data
 
+
+
+How to Start the Server Locally
+
+Prerequisites
+
+- Node.js 20+
+- Python 3.11+
+- PostgreSQL 18.3 (must be running)
+- Git
+
+First-Time Setup
+
+Backend:
+
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env — fill in DATABASE_URL, OPENAI_API_KEY, JWT_SECRET, ALLOWED_ORIGINS
+
+Required values in backend/.env:
+
+DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/asi_prototype
+OPENAI_API_KEY=sk-...
+JWT_SECRET=generate-a-random-string-here
+CLINICIAN_INVITE_CODE=a-shared-secret-for-clinician-registration
+ALLOWED_ORIGINS=http://localhost:5173
+
+Database (run once, or after schema changes):
+
+createdb -U postgres asi_prototype
+alembic upgrade head
+
+Frontend:
+
+cd frontend
+npm install
+
+Running the Dev Servers
+
+Open two terminals from the project root:
+
+# Terminal 1 — Backend (http://localhost:8000)
+cd backend
+venv\Scripts\activate
+uvicorn app.main:app --reload
+
+# Terminal 2 — Frontend (http://localhost:5173)
+cd frontend
+npm run dev
+
+Open http://localhost:5173 in your browser.
+API docs (Swagger UI) are available at http://localhost:8000/docs.
+
+
+
+Demo Users and Passwords
+
+These accounts are created by the demo seed script (backend/scripts/seed_demo_data.py). They are not added automatically by migrations — run the seed script after setting up the database:
+
+cd backend
+venv\Scripts\activate
+python scripts/seed_demo_data.py
+
+All demo accounts share the same password: demo1234
+
+| Role      | Email               | Password | Notes |
+|-----------|---------------------|----------|-------|
+| Clinician | clinician@demo.com | demo1234 | Access to clinician dashboard |
+| Patient   | alice@demo.com      | demo1234 | Alice — chronic lower back pain (7 completed sessions) |
+| Patient   | bob@demo.com        | demo1234 | Bob — neuropathic pain, right leg (5 completed sessions) |
+| Patient   | carol@demo.com      | demo1234 | Carol — fibromyalgia (6 completed sessions) |
+
+The seed script is idempotent — re-running it skips users that already exist.
+
