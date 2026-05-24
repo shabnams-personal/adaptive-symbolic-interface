@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import get_settings
+import app.models  # noqa: F401 — register all ORM models for relationship resolution
 
 settings = get_settings()
 
