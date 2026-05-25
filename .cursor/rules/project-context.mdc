@@ -1,0 +1,32 @@
+---
+description: ASI Prototype project context
+globs: **/*
+---
+
+# ASI Prototype -- Adaptive Symbolic Interface
+
+## What This Project Is
+A patient-facing web app prototype for pain management through personalized
+symbolic interventions ("placebo boosters"). Designed for clinical trial use
+under clinician supervision. Target demo audience: pain clinic doctors/researchers.
+
+## Tech Stack
+- Frontend: React 18+ with TypeScript, Vite, Tailwind CSS, built as a PWA
+- Backend: Python 3.11+ with FastAPI
+- Database: PostgreSQL with SQLAlchemy + Alembic migrations
+- AI: OpenAI GPT-4o for session script generation
+- Audio: OpenAI TTS API for text-to-speech
+- Auth: JWT-based (patient vs clinician roles)
+- Environment: Windows native (no WSL/Docker)
+
+## Project Structure
+- frontend/ -- React PWA app
+- backend/ -- FastAPI application
+- Full build plan: .cursor/plans/asi_prototype_plan.md
+
+## Code Style
+- TypeScript with strict mode for frontend
+- Python type hints for backend
+- Pydantic schemas for API validation
+- UI should be clinical, trustworthy, calming (blues/whites/grays)
+- Mobile-first responsive design
