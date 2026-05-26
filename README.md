@@ -103,4 +103,59 @@ Session audio files accumulate in `backend/media/sessions/`. Estimated ~3–5 MB
 
 ## Deployment
 
-See `.cursor/plans/asi_prototype_plan.md` for GCP Compute Engine deployment instructions.
+See `.cursor/plans/asi_prototype_plan.md` for full GCP Compute Engine first-time deployment instructions.
+
+Live site: **https://boost-care.ddns.net**
+
+---
+
+## Deploying Updates (after first-time setup)
+
+### 1. Push your changes
+
+```bash
+git push origin develop
+```
+
+### 2. SSH into the VM
+
+In [GCP Console → Compute Engine → VM instances](https://console.cloud.google.com/compute/instances), click **SSH** next to `asi-prototype`.
+
+### 3. Run the deploy script
+
+```bash
+sudo su - asi
+~/asi-prototype/scripts/deploy-update.sh
+```
+
+The script will:
+- Pull the latest `develop` branch
+- Rebuild the frontend (`npm run build`)
+- Install any new Python dependencies
+- Run any new database migrations (`alembic upgrade head`)
+- Restart the backend service
+- Run a health check
+
+### What to do in specific cases
+
+| Scenario | Extra step needed? |
+|----------|--------------------|
+| Only frontend changed | Script handles it (no extra steps) |
+| Only backend Python changed | Script handles it (no extra steps) |
+| Added a new env var | Edit `/home/asi/asi-prototype/backend/.env` before running script |
+| Changed `.env` only | Skip script; just run `sudo systemctl restart asi-backend` |
+| Only the plan/docs changed | No deploy needed |
+
+### Make the script executable (one-time, if not already done)
+
+```bash
+sudo su - asi
+chmod +x ~/asi-prototype/scripts/deploy-update.sh
+```
+
+### Run from your local machine (optional)
+
+```bash
+gcloud compute ssh asi-prototype --zone=YOUR_ZONE \
+  --command "sudo su - asi -c '~/asi-prototype/scripts/deploy-update.sh'"
+```
