@@ -30,3 +30,10 @@ under clinician supervision. Target demo audience: pain clinic doctors/researche
 - Pydantic schemas for API validation
 - UI should be clinical, trustworthy, calming (blues/whites/grays)
 - Mobile-first responsive design
+
+## Git Behaviour
+- NEVER run `git commit` or `git push` (or any destructive git command) without
+  explicitly asking the user first and receiving a clear "yes" / "go ahead".
+- After completing code changes, summarise what changed and ask: "Shall I commit
+  and push these changes?"
+- Only proceed with the commit/push after the user confirms.
